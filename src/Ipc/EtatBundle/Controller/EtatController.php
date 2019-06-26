@@ -1885,11 +1885,11 @@ public function creationEtat1FromCsv($url_fichier) {
 				$entity_mode = $entity_localisation->getMode();
 
 			} else {	
-				($data[11] != '') ? $liste_m_compteur[] = $data[11];
-				($data[12] != '') ? $liste_m_test[] = $data[12];
-				($data[13] != '') ? $liste_m_forcage[] = $data[13];
-				($data[14] != '') ? $liste_m_combustible1[] = $data[14];
-				($data[15] != '') ? $liste_m_combustible2[] = $data[15];
+				($data[11] != '') ? $liste_m_compteur[] = $data[11]:'';
+				($data[12] != '') ? $liste_m_test[] = $data[12]:'';
+				($data[13] != '') ? $liste_m_forcage[] = $data[13]:'';
+				($data[14] != '') ? $liste_m_combustible1[] = $data[14]:'';
+				($data[15] != '') ? $liste_m_combustible2[] = $data[15]:'';
 			}
 		}
 		fclose($handle);
