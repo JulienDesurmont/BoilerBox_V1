@@ -791,7 +791,7 @@ public function configurationAuto($type) {
 	}
 	// Variable de la nouvelle version
 	$liste_conf['numero_version']['description'] = "Numéro de version du site web";
-	$liste_conf['numero_version']['value'] = "2.6.2";
+	$liste_conf['numero_version']['value'] = "2.6.3";
 	$liste_conf['numero_version']['parametreAdmin'] = true;
 
     $liste_conf['rapport_pourcentage_messages_max']['description'] = "Pourcentage maximum avant déclanchement d'une erreur dans le rapport journalier";
@@ -847,6 +847,12 @@ public function configurationAuto($type) {
     $liste_conf['limitation_export_sql_listing']['description'] = "Limitation sql du nombre de lignes autorisées lors de l'exportation des données de listing";
     $liste_conf['limitation_export_sql_listing']['value'] = 200000;
     $liste_conf['limitation_export_sql_listing']['parametreAdmin'] = false;
+
+
+    $liste_conf['url_http_boilerbox']['description'] = "Url accès au serveur Web";
+    $liste_conf['url_http_boilerbox']['value'] = "";
+    $liste_conf['url_http_boilerbox']['parametreAdmin'] = false;
+
 
 
 
