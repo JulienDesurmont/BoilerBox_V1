@@ -3,8 +3,13 @@
 <head>
 {% block head %}
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="L'Interface de supervision des Chaudières Industrielles">
+
 	<link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
 	<title>{% block title %}{% if service_session.get('pageTitle').affaire is defined %}{{ service_session.get('pageTitle').affaire }} - {% endif %}{% endblock title %}</title>
+
+
 
     {% stylesheets  filter="cssrewrite, scssphp" output="css/maincommun.css"
         'bundles/ipcprog/css/calendar.css'
@@ -33,6 +38,11 @@
 	{% endstylesheets %}
 	#}
 	<link rel="stylesheet" type="text/css" href="{{ asset('bundles/ipcprog/css/print-export-01.css') }}" media="print" />
+
+
+	{% block stylecss %}
+	{% endblock stylecss %}
+
 
 {% endblock head %}
 
@@ -65,10 +75,6 @@
 			data-urlReadModbus={{ path('ipc_read_modbus') }}
 			data-urlSetScript={{ path('ipc_set_script') }}
 			data-urlEtat={{ path('ipc_etat') }}
-			data-urlSaveListingPersoRequest={{ path('ipc_saveRequest', {'page':'listing'}) }}
-			data-urlSaveGraphiquePersoRequest={{ path('ipc_saveRequest', {'page':'graphique'}) }}
-			data-urlDeleteListingPersoRequest={{ path('ipc_deleteRequest', {'page':'listing'}) }}
-			data-urlDeleteGraphiquePersoRequest={{ path('ipc_deleteRequest', {'page':'graphique'}) }}
  			data-urlGetRequetesPerso={{ path('ipc_getRequetePerso') }}
 			data-urlRegister={{ path('fos_user_registration_register') }}
 			data-urlCreationUtilisateur={{ path('ipc_createUser') }}
@@ -415,6 +421,7 @@
 		</div>
 		<!-- /Footer -->
 	</div>
+	<!-- pagePrincipaleHeader -->
 
     <div id='lightboxSmall' class='cacher'>
         {% block popup_small %}

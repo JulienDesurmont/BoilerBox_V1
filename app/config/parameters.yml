@@ -1,7 +1,6 @@
 # This file is auto-generated during the composer install
 parameters:
     database_driver: pdo_mysql
-#    database_host: 127.0.0.1
     database_host: localhost
     database_port: null
     database_name: ipc_master2
@@ -19,7 +18,7 @@ parameters:
     locale: fr
     secret: ThisTokenIsNotSoSecretChangeIt
     log.class: Ipc\ProgBundle\Services\GestionLog\ServiceGestionLog
-    socket_unix: '/var/run/mysql/mysql.sock'
+    socket_unix: /var/run/mysql/mysql.sock
 
     traduction.class: Ipc\ProgBundle\Services\Traduction\ServiceTraduction
     importbin.class: Ipc\ProgBundle\Services\ImportBin\ServiceImportBin
@@ -38,9 +37,9 @@ parameters:
     configuration.class: Ipc\ProgBundle\Services\Configuration\ServiceConfiguration
     service_fichiers.class: Ipc\ProgBundle\Services\Fichiers\ServiceFichiers
     rattrapimportbin.class: Ipc\ProgBundle\Services\RattrapImportBin\ServiceRattrapImportBin
-
-    registration.class: Ipc\UserBundle\Form\Type\RegistrationType
     getNbDBDonnees.class: Ipc\OutilsBundle\Services\ServiceVerificationDB
+
+	registration.class: Ipc\UserBundle\Form\Type\RegistrationType
 
     security.authentication.listener.form.class: Ipc\ProgBundle\Listener\Security\UsernamePasswordFormAuthenticationListener
     security.logout_listener.class: Ipc\ProgBundle\Listener\Security\LogoutListener
