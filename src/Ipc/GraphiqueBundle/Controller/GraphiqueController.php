@@ -557,10 +557,10 @@ public function indexAction() {
 		$ent_requete = new Requete();
 		$ent_requete->setCreateur($this->session->get('label'));
 		$ent_requete->setType('graphique');
-		$form_requete = $this->createForm(new RequeteType(), $ent_requete, [
+		$form_requete = $this->createForm(new RequeteType(), $ent_requete, array(
 			'action' => $this->generateUrl('ipc_accueilGraphique'),
 			'method' => 'POST'
-			]
+			)
 		);
 		// Récupération de la requête
 		$request = $this->get('request');

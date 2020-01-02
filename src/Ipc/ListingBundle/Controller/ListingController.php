@@ -708,10 +708,10 @@ public function indexAction() {
 		$ent_requete = new Requete();
 		$ent_requete->setCreateur($this->session->get('label'));
 		$ent_requete->setType('listing');
-		$form_requete = $this->createForm(new RequeteType(), $ent_requete, [
+		$form_requete = $this->createForm(new RequeteType(), $ent_requete, array(
 			'action' => $this->generateUrl('ipc_accueilListing'),
 			'method' => 'POST'
-		]
+			)
 		);
 		
 		// Récupération de la requête
@@ -1447,4 +1447,6 @@ public function changeListeReqAction() {
 	$this->session->set('liste_req', json_decode($ent_requete->getRequete(), true));
 	// On renvoi la page d'accueil de Listing
 	return $this->redirect($this->generateUrl('ipc_accueilListing'));
+}
+
 }
