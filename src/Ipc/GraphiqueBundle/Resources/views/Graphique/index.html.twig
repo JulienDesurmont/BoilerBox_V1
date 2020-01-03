@@ -10,8 +10,7 @@
     <span id="pageGraphiqueIndex" class="cacher"></span>
     <div id="regRequest">
 		<div style='margin-bottom:5px'>
-			<input type='radio' name='requeteClient' value='Personnel'     {% if compte_requete_perso|lower == 'personnel' %}      checked {% endif %} onClick="addCompteRequest('graphique','Personnel');">Requêtes personne
-lles
+			<input type='radio' name='requeteClient' value='Personnel'     {% if compte_requete_perso|lower == 'personnel' %}      checked {% endif %} onClick="addCompteRequest('graphique','Personnel');">Requêtes personnelle
 			{% if is_granted('ROLE_ADMIN') %}
 				<input type='radio' name='requeteClient' value='Admin'     {% if compte_requete_perso|lower == 'admin' %}          checked {% endif %} onClick="addCompteRequest('graphique','Admin');">Requêtes Admin
 			{% endif %}
