@@ -39,7 +39,7 @@ parameters:
     rattrapimportbin.class: Ipc\ProgBundle\Services\RattrapImportBin\ServiceRattrapImportBin
     getNbDBDonnees.class: Ipc\OutilsBundle\Services\ServiceVerificationDB
 
-	registration.class: Ipc\UserBundle\Form\Type\RegistrationType
+    registration.class: Ipc\UserBundle\Form\Type\RegistrationType
 
     security.authentication.listener.form.class: Ipc\ProgBundle\Listener\Security\UsernamePasswordFormAuthenticationListener
     security.logout_listener.class: Ipc\ProgBundle\Listener\Security\LogoutListener
