@@ -721,7 +721,7 @@
 
 		/* Fonction qui met ou enleve la classe vueRestreinte */
 		function vueRestreinte() {
-			$('#headprint').toggleClass("vueRestreinte");
+			$('header').toggleClass("vueRestreinte");
 			$('nav').toggleClass("vueRestreinte");
 			$('#bloc-last-data').toggleClass("vueRestreinte");
 			$('#pagePrincipaleBody').toggleClass("vueRestreinte");
@@ -738,6 +738,7 @@
         %}
         	<script src="{{ asset_url }}"></script>
 		{% endjavascripts %}
+		{#<script type='text/javascript' src="{{ asset('bundles/ipcprog/js/validation_popup.js') }}"></script>#}
 	{% endblock progJavascript %}
 
     {% block bodyjavascript %}
