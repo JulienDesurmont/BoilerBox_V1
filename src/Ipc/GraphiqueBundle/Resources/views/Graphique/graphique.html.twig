@@ -4,9 +4,12 @@
 
 {% block title %}{{ parent() }}Compression{% endblock title %}
 
+{% block title_header %}
+	<h1>{{ 'label.titre.courbe'|trans }}</h1>
+{% endblock title_header %}
+
 {% block body %}
     <div id="graphiquemessage">
-    	<h1>{{ 'label.titre.courbe'|trans }}</h1>
     	<div class="info"><div class="icone-info">i</div>{{ 'label.info.points_max'|trans({'%limit%':limit}) }}</div>
     	{% if tempMax %}
 			<p>{{ 'label.requete_timeout'|trans }}</p>
@@ -66,7 +69,7 @@
 	</div>
 {% endblock body %}
 
-{% block choix_validation %}
+{% block menu_droite %}
     <div id="validation" class='validationbouton'>
 		<div>
 			<a href="#" onClick="document.getElementById('choixSubmit').value='Valider';attente();stopPing();submitForm('myForm2');return false;" >
@@ -98,7 +101,8 @@
 			</a>
 		</div>
     </div>
-{% endblock choix_validation %}
+{% endblock menu_droite %}
+
 
 {% block footer %}
 	{{ 'label.titre.legende'|trans }}

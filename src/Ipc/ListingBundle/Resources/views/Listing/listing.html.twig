@@ -8,6 +8,8 @@
 	<span id="pageListingView" class="cacher"></span>
 	<h1>{{ 'label.titre.listing'|trans }}
 		{# Affichage du bouton d'impression si l'autorisation est accordée #}
+	</h1>
+	<div id="regRequest">
 		{% if impression_listing == 1 %}
 			<div id="boutontitre" class='notToBePrinted'>
 				<form name='myForm2' method='get' action="{{ path('ipc_listing') }}">
@@ -38,22 +40,22 @@
 				</form>
 			</div>
 		{% endif %}
-	</h1>
-	{% if tabDesRequetes|length > 0 %}
-		<div id='resultatDebut'>
-			<div class='notToBePrinted Pleft'>
-				Page :
-				<div class='navigation'>
-					<a href='#' class='prevPages' onclick="defineNumPage('first','none');return false;"><<</a>
-					<a href='#' class='prevPages' onclick="defineNumPage('prev','none');return false;"><</a>
-					<input type='text' id='numpage_top' size='4' onChange="defineNumPage('num','top');" value="{{ page }}" /> / {{ maxpages }}
-					<a href='#' class='nextPages' onclick="defineNumPage('next','none');return false;">></a>
-					<a href='#' class='nextPages' onclick="defineNumPage('last','none');return false;">>></a>
-				</div>
-			</div><!--
-			--><div class='Pright'>{{ 'label.titre.listing'|trans }} {{ page }} / {{ maxpages }} ( {{ nbDonneesTotal }} {{ 'label.donnee'|transchoice(nbDonneesTotal) }} )</div>
-		</div>
-	{% endif %}
+		{% if tabDesRequetes|length > 0 %}
+			<div id='resultatDebut'>
+				<div class='notToBePrinted Pleft'>
+					Page :
+					<div class='navigation'>
+						<a href='#' class='prevPages' onclick="defineNumPage('first','none');return false;"><<</a>
+						<a href='#' class='prevPages' onclick="defineNumPage('prev','none');return false;"><</a>
+						<input type='text' id='numpage_top' size='4' onChange="defineNumPage('num','top');" value="{{ page }}" /> / {{ maxpages }}
+						<a href='#' class='nextPages' onclick="defineNumPage('next','none');return false;">></a>
+						<a href='#' class='nextPages' onclick="defineNumPage('last','none');return false;">>></a>
+					</div>
+				</div><!--
+				--><div class='Pright'>{{ 'label.titre.listing'|trans }} {{ page }} / {{ maxpages }} ( {{ nbDonneesTotal }} {{ 'label.donnee'|transchoice(nbDonneesTotal) }} )</div>
+			</div>
+		{% endif %}
+	</div>
 {% endblock title_header %}
 
 {% block right_menu %}
