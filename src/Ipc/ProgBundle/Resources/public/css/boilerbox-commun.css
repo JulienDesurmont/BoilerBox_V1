@@ -122,6 +122,20 @@ div.tableauConfig input[type="date"].inputText {
 
 
 
+/* Tableau des erreurs (Outils gestion des erreurs */
+div.table_multi_col {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+/* Champs de type chevron dans une table en flex */
+div.col_chevron {
+	display: flex; 
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
 
 
 #siteIpc {
@@ -141,20 +155,22 @@ div.tableauConfig input[type="date"].inputText {
 
 
 
-/* *** *** BLOC En-TETE *** *** */
+/* *** *** bloc en-tete *** *** */
 header {
 	display: flex;
 	flex-direction: column;
 	background: #000000;
 	height: 250px;
-	color: #FFF;
+	padding-top: 5px;
+	color: #fff;
 }
 header.vueRestreinte {
   	min-height: 140px;
 	max-height: 140px;
 	overflow: hidden;
+	padding-top: 0;
 }
-/* *** Partie Haute de l'en-tête *** */
+/* *** partie haute de l'en-tête *** */
 #header-content {
 	display: flex;
 	flex-direction: row;
@@ -171,7 +187,7 @@ header.vueRestreinte {
 }
 
 
-/* LOGO IBC */
+/* logo ibc */
 #logo-IBC {
 	display: flex;
 	flex-direction: row;	
@@ -332,14 +348,19 @@ nav ul {
 	list-style: none;
 }
 nav ul li {
-	width: 200px;
+	width: 180px;
 	height: 35px;
-	border-left: 2px solid #CCC;
 	padding-left: 10px;
 }
-nav ul li.menuleft {
+nav ul li:nth-child(2n + 1) {
+	width: 1px;
+	border-left:1px solid #ccc;
+}
+
+nav ul li.menu-left {
 	border: none;
 }
+
 nav ul li a {
 	display: flex;
     flex-direction: row;
@@ -584,6 +605,7 @@ menu_droite {
     color: #000000;
     text-align: center;
     background: #FFF;
+	padding-bottom: 10px;
 }
 
 div.pageDefaut {
@@ -593,7 +615,6 @@ div.pageDefaut {
 	flex-direction: column;
 	overflow-y: auto;
 	overflow-x: hidden;
-	/*border:2px solid purple;*/
 }
 
 /* BLOC DES MENUS */
@@ -614,15 +635,22 @@ div.pageDefaut {
   	min-width: 200px;
 	min-height: 40px;
 	margin-top: 15px;
+	background-color: #ccc;
+	border:2px groove gray;
 }
 #validation .bgbouton:hover {
   width: 80% !important;
 }
 #validation a {
-  color: inherit;
-  font-weight: bold;
-  text-transform: uppercase;
+  	color: inherit;
+	font-weight: 600;
+  	text-transform: uppercase;
 }
+
+#validation a:hover {
+	text-decoration: none;
+}
+
 #validationMin .blue .bgbouton:hover {
   color: #FFF;
   background: #006AB3;
@@ -668,9 +696,11 @@ div.pageDefaut {
 
 #pagePrincipaleBody {
 	overflow: auto;
-	/*border: 3px groove black;*/
+	display: flex;
+	flex-direction: column;
 	flex-grow: 1;
 }
+
 #page_footer {
 	height: 100px;
 }
@@ -678,14 +708,23 @@ div.pageDefaut {
 	display: none;
 }
 
-/*
-#pagePrincipaleBody.vueRestreinte {
-  bottom: 0;
+
+#pagePrincipaleBody div.infos {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
 }
-*/
 
-
-
+#pagePrincipaleBody div.infos div.texte_infos {
+    overflow: auto;
+	border: 2px groove #ccc;
+	height: 160px;
+	width: 80%;
+	padding:  0 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
 
 
 /* /Bloc des menus de gauche et droite */
@@ -2166,6 +2205,7 @@ div.listederoulante select {
   border-bottom: #000000 solid 1px;
 }
 .gestion_parametres_foot {
+	border:2px solid red;
   width: 100%;
   height: 50px;
   margin-top: 10px;
