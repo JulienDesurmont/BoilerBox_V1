@@ -76,7 +76,7 @@ select:
     requetes_technicien: Requêtes du compte technicien
     requetes_admin: Requêtes du compte admin
     requetes_personnelles: Requêtes personnelles
-
+    
     requetes_perso:
         titre:
            listing: Requêtes personnelles
@@ -98,6 +98,7 @@ checkbox:
     minimiser: Minimiser
     uniformiser: Uniformiser toutes les échelles
     legende: Afficher Toutes / Aucune
+    opacite: Opacité
 
 textbox:
     bas: Bas
