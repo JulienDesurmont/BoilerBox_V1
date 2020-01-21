@@ -136,10 +136,10 @@
                     		</div>
 						</div>
 						<!--Identification-->
-						<div id='bloc-de-connexion' >
+						<div id='bloc-de-connexion'>
 							<div id='headerUser' class='user'>
 								{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-									<div id='bloc-infos-user'>
+									<div id='bloc-infos-user' class='notToBePrinted'>
 										<span id='userLabel' data-label={{ service_session.get('label') }} >{{ service_session.get('label') }}</span>
 										{% if is_granted('ROLE_ADMIN') %}
 											<span> ( Administrateur ) </span>
@@ -152,7 +152,7 @@
 										{% endif %}
 									</div>
 								{% endif %}
-								<div class='box grandScreen'>
+								<div class='box grandScreen notToBePrinted'>
 									{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 										{% if is_granted('ROLE_SUPERVISEUR') %}
 											<div class='iconeAdministrateur'><img src="{{ asset('bundles/ipcprog/images/ipcWeb/login_admin.png') }}" alt='administrateur' /></div>
