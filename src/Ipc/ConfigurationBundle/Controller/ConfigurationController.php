@@ -99,16 +99,20 @@ private function initialisation() {
 	$this->fillnumbers = $this->get('ipc_prog.fillnumbers');
 	$this->tab_modules = array();
     if ($this->userLabel == '' ) {
-        if ($this->get('security.context')->isGranted('ROLE_ADMIN_LTS')) {
+        if ($this->get('security.context')->isGranted('ROLE_ADMIN')) {
+            $this->userLabel = 'Admin'
+        } elseif ($this->get('security.context')->isGranted('ROLE_ADMIN_LTS')) {
             $this->userLabel = 'Administrateur';
         } elseif ($this->get('security.context')->isGranted('ROLE_SUPERVISEUR')) {
             $this->userLabel = 'Superviseur';
-        } elseif ($this->get('security.context')->isGranted('ROLE_TECHNICIEN')) {
+        } elseif ($this->get('security.context')->isGranted('ROLE_TECHNICIEN_LTS')) {
             $this->userLabel = 'Technicien';
+        } elseif ($this->get('security.context')->isGranted('ROLE_TECHNICIEN')) {
+            $this->userLabel = 'Tech';
         } elseif ($this->get('security.context')->isGranted('ROLE_USER')) {
             $this->userLabel = 'Client';
         }
-		$this->session->set('label', $this->userLabel);
+        $this->session->set('label', $this->userLabel);
     }
 }
 
@@ -758,6 +762,7 @@ public function configurationAuto($type) {
     	$liste_conf['graphique_max_points']['description'] = "CRITIQUE : Nombre de points maximum par courbe (4000 par défaut). !!!  Augmenter cette limite peut entrainer un blocage applicatif)";
     	$liste_conf['graphique_max_points']['value'] = 4000;
 		$liste_conf['graphique_max_points']['parametreAdmin'] = true;
+		$liste_conf['graphique_max_points']['parametreTechnicien'] = true;
     	$liste_conf['live_graph_nb_mois']['description'] = "La recherche Live graphique portera sur ces X derniers mois";
     	$liste_conf['live_graph_nb_mois']['value'] = 12;
 		$liste_conf['live_graph_nb_mois']['parametreAdmin'] = true;
