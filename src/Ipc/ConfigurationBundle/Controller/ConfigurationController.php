@@ -429,6 +429,7 @@ public function voiripcAction(Fichier $fichier) {
 public function parametresipcAction(Request $requete) {
 	$this->constructeur();
 	$this->initialisation();
+	$message_tmp = '';
 	$service_password = $this->get('ipc_prog.password');
 	// Récupération des paramètres de configuration
 	// Gestion de la connexion à la base de donnée
