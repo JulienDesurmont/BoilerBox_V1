@@ -1,6 +1,5 @@
 web/etats/
 web/logs/
-web/config_ipc.txt
 web/uploads/
 app/cache/
 app/logs/
