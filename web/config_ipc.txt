@@ -1,2 +1,2 @@
 boilerbox_dev
-/run/mysqld/mysqld.sock
+/var/run/mysql/mysql.sock
