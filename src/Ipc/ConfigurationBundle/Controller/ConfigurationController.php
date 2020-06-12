@@ -56,7 +56,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
 
-
 class ConfigurationController extends Controller {
 private $fillnumber;
 private $liste_localisations;
@@ -112,7 +111,7 @@ private function initialisation() {
         } elseif ($this->get('security.context')->isGranted('ROLE_USER')) {
             $this->userLabel = 'Client';
         }
-        $this->session->set('label', $this->userLabel);
+		$this->session->set('label', $this->userLabel);
     }
 }
 
@@ -348,7 +347,7 @@ public function importAction() {
 				}
 				$pattern = '/^tei_(.+?)_(.+?)_#(.+?)#_.+?$/';
 				if (! preg_match($pattern, $nomfichier, $tabNomFichier)) {
-					 $this->getRequest()->getSession()->getFlashBag()->add('info', 'Nomenclature du fichier attendue : TEI_CodeAffaire_NumLocalisation_#(CodeProgramme || noprog)#_Horodatage. ( Fichier reçu '.$nomfichier.' )');
+					$this->getRequest()->getSession()->getFlashBag()->add('info', 'Nomenclature du fichier attendue : TEI_CodeAffaire_NumLocalisation_#(CodeProgramme || noprog)#_Horodatage. ( Fichier reçu '.$nomfichier.' )');
 					$dbh = $connexion->disconnect();
 					return $this->render('IpcConfigurationBundle:Configuration:import_table_echange_ipc.html.twig', array(
 						'form' => $form->createView(),
@@ -427,9 +426,9 @@ public function voiripcAction(Fichier $fichier) {
 // Fonction qui retourne le formulaire permettant de paramétrer la configuration de l'IPC
 // Cette fonction est également utilisée lors de la modification de paramètres
 public function parametresipcAction(Request $requete) {
+	$message_tmp = '';
 	$this->constructeur();
 	$this->initialisation();
-	$message_tmp = '';
 	$service_password = $this->get('ipc_prog.password');
 	// Récupération des paramètres de configuration
 	// Gestion de la connexion à la base de donnée
@@ -454,10 +453,10 @@ public function parametresipcAction(Request $requete) {
 				$parametreAdmin = false;
 			}
 			if (isset($_POST['parametreTechnicien'])) {
-				$parametreTechnicien = true;
-			} else {
-				$parametreTechnicien = false;
-			}
+                $parametreTechnicien = true;
+            } else {
+                $parametreTechnicien = false;
+            }
 			$designation = htmlspecialchars($_POST['designation']);
 			$valeur = htmlspecialchars($_POST['valeur']);
 
@@ -573,6 +572,7 @@ public function parametresipcAction(Request $requete) {
 							$this->log->setLog("Anciennes données : ".$old_entity_configuration->getDesignation()." [ ".$old_entity_configuration->getValeur()." ]", $this->fichier_log);
 							$this->log->setLog("Nouvelles données : ".$configuration->getDesignation()." [ ".$configuration->getValeur()." ]", $this->fichier_log);
 							$message_tmp = "Modification effectuée".$this->setMessageConfiguration($parametre);
+
 							$this->get("session")->getFlashBag()->add('info',$message_tmp);
 							return $this->configurationAction($requete);
 						}
@@ -762,8 +762,9 @@ public function configurationAuto($type) {
     	// Paramètres pour le module GRAPHIQUE
     	$liste_conf['graphique_max_points']['description'] = "CRITIQUE : Nombre de points maximum par courbe (4000 par défaut). !!!  Augmenter cette limite peut entrainer un blocage applicatif)";
     	$liste_conf['graphique_max_points']['value'] = 4000;
-		$liste_conf['graphique_max_points']['parametreAdmin'] = true;
+		$liste_conf['graphique_max_points']['parametreAdmin'] = false;
 		$liste_conf['graphique_max_points']['parametreTechnicien'] = true;
+
     	$liste_conf['live_graph_nb_mois']['description'] = "La recherche Live graphique portera sur ces X derniers mois";
     	$liste_conf['live_graph_nb_mois']['value'] = 12;
 		$liste_conf['live_graph_nb_mois']['parametreAdmin'] = true;
@@ -857,7 +858,7 @@ public function configurationAuto($type) {
     $liste_conf['limitation_export_sql_graphique']['parametreAdmin'] = false;
 
 
-   $liste_conf['limitation_excel_listing']['description'] = "Limitation du nombre de lignes autorisées dans les fichiers excel lors des impressions des données de listing";
+   	$liste_conf['limitation_excel_listing']['description'] = "Limitation du nombre de lignes autorisées dans les fichiers excel lors des impressions des données de listing";
     $liste_conf['limitation_excel_listing']['value'] = 200000;
     $liste_conf['limitation_excel_listing']['parametreAdmin'] = false;
 
@@ -870,19 +871,21 @@ public function configurationAuto($type) {
     $liste_conf['url_http_boilerbox']['value'] = "http://cXXX.boiler-box.fr/";
     $liste_conf['url_http_boilerbox']['parametreAdmin'] = false;
 	$liste_conf['url_http_boilerbox']['parametreTechnicien'] = true;
-
-
-
 	}
+
 	// Variable de la nouvelle version
 	$liste_conf['numero_version']['description'] = "Numéro de version du site web";
-	$liste_conf['numero_version']['value'] = "2.13.1";
+	$liste_conf['numero_version']['value'] = "2.14.0";
 	$liste_conf['numero_version']['parametreAdmin'] = true;
 
-	$liste_conf['nb_jours_nb_db_donnees']['description'] = "Nombre de jours pour la recherche du nombre de données dans la table t_donnee";
-	$liste_conf['nb_jours_nb_db_donnees']['value'] = "3";
-	$liste_conf['nb_jours_nb_db_donnees']['parametreAdmin'] = true;
 
+    $liste_conf['nb_jours_nb_db_donnees']['description'] = "Nombre de jours pour la recherche du nombre de données dans la table t_donnee";
+    $liste_conf['nb_jours_nb_db_donnees']['value'] = "3";
+    $liste_conf['nb_jours_nb_db_donnees']['parametreAdmin'] = true;
+
+	$liste_conf['listing_nb_par_page']['description'] = "Indique le nombre de listing à afficher par page";
+	$liste_conf['listing_nb_par_page']['value'] = "1000";
+	$liste_conf['listing_nb_par_page']['parametreAdmin'] = false;
 
 		
 
@@ -896,7 +899,7 @@ public function configurationAuto($type) {
 		if (isset($conf['parametreTechnicien'])) {
 			$configuration->setParametreTechnicien($conf['parametreTechnicien']);
 		} else {
-			$configuration->setParametreTechnicien(false);
+			 $configuration->setParametreTechnicien(false);
 		}
 		$id_config = $configuration->SqlGetId($dbh, $intitule);
 		// Si le paramètre existe : Mise à jour
@@ -1032,26 +1035,6 @@ public function creationSiteAction($numfresh) {
 			$site = new Site();
 			$intitule = htmlspecialchars($_POST['Site']['intitule']);
 			$affaire = htmlspecialchars($_POST['Site']['affaire']);
-			$login_ftp = htmlspecialchars($_POST['Site']['login_ftp']);
-			$mot_de_passe_ftp = htmlspecialchars($_POST['Site']['password_ftp']['first']);
-			$confirmation = htmlspecialchars($_POST['Site']['password_ftp']['second']);
-			// Vérification de la conformité des mdp
-			if ($mot_de_passe_ftp != $confirmation) {
-				$this->container->get("session")->getFlashBag()->add('info', "Les mots de passes ne sont pas identiques");
-				$liste_sites = $em->getRepository('IpcProgBundle:Site')->findAll();
-				$dbh = $connexion->disconnect();
-				$response = new Response($this->renderView('IpcConfigurationBundle:Configuration:creationSite.html.twig', array(
-					'liste_sites' => $liste_sites,
-					'form_loc' => $form_localisation->createView(),
-					'form' => $form->createView(),
-					'hasError' 	=> $request->getMethod() == 'POST' && !$form->isValid(),
-					'sessionCourante' => $this->session->getSessionName(),
-        			'tabSessions' => $this->session->getTabSessions()
-				)));
-				$response->setPublic();
-				$response->setETag(md5($response->getContent()));
-				return $response;
-			}
 			$nbAutomates = 0;
 			if (isset($_POST['Site']['siteCourant'])) {
 				$siteCourant = 1;
@@ -1061,8 +1044,6 @@ public function creationSiteAction($numfresh) {
 			$site->setIntitule($intitule);
 			$site->setAffaire($affaire);
 			$site->setSiteCourant($siteCourant);
-			$site->setLoginFtp($login_ftp);
-			$site->setPasswordFtp($mot_de_passe_ftp);
 			if ($site->getSiteCourant() == true) {
 				// Le précédent Site courant passe à false et sa date de fin d'exploitation est mise à jour
 				$site->SqlUncheck($dbh, $site->SqlGetIdCourant($dbh), $site->getDebutExploitationStr());
@@ -1152,41 +1133,15 @@ public function creationSiteAction($numfresh) {
 			$id = intval(htmlspecialchars($_POST['idconf']));
 			$intitule = htmlspecialchars($_POST['intitule']);
 			$affaire = htmlspecialchars($_POST['affaire']);
-			$login_ftp = htmlspecialchars($_POST['loginFtp']);
-			$mot_de_passe = htmlspecialchars($_POST['passwordFtp']);
-			$confirmation = htmlspecialchars($_POST['confirmation']);
 			$debExploit	= htmlspecialchars($_POST['debutExploitation']);
 			$finExploit = htmlspecialchars($_POST['finExploitation']);
 			// Si un des paramètres n'est pas définit, retour d'un message d'erreur
-			if (($intitule == '') || ($affaire == '') || ($debExploit == '') || ($login_ftp == '')) {
+			if (($intitule == '') || ($affaire == '') || ($debExploit == '')) {
 				$this->get("session")->getFlashBag()->add('info', "Veuillez remplir tous les champs svp");
 				break;
 			}
 			// Récupération du site dont l'id est $id
 			$site = $em->getRepository('IpcProgBundle:Site')->find($id);
-			// Si le login ftp diffère du précédent un mot de passe ftp est requis
-			if ($login_ftp != $site->getLoginFtp()) {
-				if ((! $mot_de_passe) || (! $confirmation)) {
-					$this->get("session")->getFlashBag()->add('info', 'Veuillez entrer le mdp pour le nouvel accès ftp svp');
-					break;
-				}
-			}
-			if ($mot_de_passe != $confirmation) {
-				$this->container->get("session")->getFlashBag()->add('info', "Les mots de passes ne sont pas identiques");
-				$liste_sites = $em->getRepository('IpcProgBundle:Site')->findAll();
-				$dbh = $connexion->disconnect();
-				$response = new Response($this->renderView('IpcConfigurationBundle:Configuration:creationSite.html.twig', array(
-					'liste_sites' => $liste_sites,
-					'form' => $form->createView(),
-					'form_loc' => $form_localisation->createView(),
-					'hasError' => $request->getMethod() == 'POST' && !$form->isValid(),
-					'sessionCourante' => $this->session->getSessionName(),
-        			'tabSessions' => $this->session->getTabSessions()
-				)));
-				$response->setPublic();
-				$response->setETag(md5($response->getContent()));
-				return $response;
-			}
 			if (isset($_POST['siteCourant'])) {
 				$siteCourant = 1;
 			} else {
@@ -1194,7 +1149,6 @@ public function creationSiteAction($numfresh) {
 			}
 			$site->setIntitule($intitule);
 			$site->setAffaire($affaire);
-			$site->setLoginFtp($login_ftp);
 			$site->setSiteCourant($siteCourant);
 			if ($site->getSiteCourant() == true) {
 				// Le précédent Site courant passe à false et sa date de fin d'exploitation est mise à jour
@@ -1206,10 +1160,6 @@ public function creationSiteAction($numfresh) {
 			}
 			if ($finExploit) {
 				$site->setFinExploitation(new \Datetime($finExploit));
-			}
-			// Mise à jour avec modification des paramètres ftp si un mot de passe est entré
-			if ($mot_de_passe) {
-				$site->setPasswordFtp($mot_de_passe);
 			}
 			try {
 				$em->flush();
@@ -1480,7 +1430,6 @@ public function creationSiteAction($numfresh) {
 }
 
 
-// Détermine quels sont les droits d'accès fournis au client
 /**
  * Require ROLE_ADMIN for only this controller method.
  *
@@ -1775,7 +1724,6 @@ public function ajaxGetDateAction() {
 	}
 	return new Response();
 }
-
 
 //	Fonction qui recoit une date (jj-mm-aaaa) et retourne un tableau contenant l'année et le mois
 function coupeDate($date) {
@@ -2285,12 +2233,14 @@ public function addTypeGenerateurAction() {
 }
 
 
+// Fonction qui permet de modifier la couleur des genres.
+// Fonction qui retourne vers la page de gestion des scripts.
+//  Cette page indique la liste des scripts. Ceux qui sont actif et ceux qui ne le sont pas
 /**
  * Require ROLE_ADMIN for only this controller method.
  *
  * @Security("is_granted('ROLE_ADMIN')")
 */
-// Fonction qui permet de modifier la couleur des genres.
 public function gestionGenresAction() {
 	$this->constructeur();
 	$this->initialisation();
@@ -2330,32 +2280,33 @@ private function getIdSiteCourant($dbh) {
     return ($idSiteCourant);
 }
 
+
 // Fonction qui supprime une requête personnelle
 // On vérifie que l'utilisateur peut supprimer la requete : Il en est le createur ou il est administrateur
 public function deleteRequestPersoAction() {
-	$this->constructeur();
+    $this->constructeur();
 	$this->initialisation();
 	// Récupération de la page d'origine de la demande
 	$page = $_GET['page'];
-	// récupération de la requête à supprimer
-	$id_requete = $_GET['id_requete'];
+    // récupération de la requête à supprimer
+    $id_requete = $_GET['id_requete'];
 	if ($id_requete != 0) {
-		$requete = $this->em->getRepository('IpcConfigurationBundle:Requete')->find($id_requete);
-		if ( ($requete->getCreateur() == $this->userLabel) || ($this->get('security.context')->isGranted('ROLE_ADMIN_LTS')) ) {
-			// Suppression de la requête personnelle
-			$this->em->remove($requete);
-			$this->em->flush();
-			// Récupération de la page d'origine  pour
-			// Supprimer la variable de session indiquant la requête selectionnée
-			// ET
-			// Retourner sur la bonne page d'accueil (le bon index.html)
-			if ($page == 'listing') {
-				$this->removeListeReq('listing');
-				$this->session->set('listing_requete_selected', null);
-			} else if ($page =='graphique') {
-				$this->removeListeReq('graphique');
-				$this->session->set('graphique_requete_selected', null);
-			}
+    	$requete = $this->em->getRepository('IpcConfigurationBundle:Requete')->find($id_requete);
+		if ( ($requete->getCreateur() == $this->userLabel) || ($this->get('security.context')->isGranted('ROLE_ADMIN_LTS')) ) { 
+    		// Suppression de la requête personnelle
+    		$this->em->remove($requete);
+    		$this->em->flush();
+    		// Récupération de la page d'origine  pour
+    		// Supprimer la variable de session indiquant la requête selectionnée
+    		// ET
+    		// Retourner sur la bonne page d'accueil (le bon index.html)
+    		if ($page == 'listing') {
+    		    $this->removeListeReq('listing');
+    		    $this->session->set('listing_requete_selected', null);
+    		} else if ($page =='graphique') {
+    		    $this->removeListeReq('graphique');
+    		    $this->session->set('graphique_requete_selected', null);
+    		}
 		} else {
 			$this->getRequest()->getSession()->getFlashBag()->add('info', "Vous n'avez pas les autorisations pour supprimer cette requête");
 		}
@@ -2368,12 +2319,12 @@ public function deleteRequestPersoAction() {
 }
 
 public function removeListeReq($page) {
-	if ($page == 'listing') {
-		$this->session->remove('liste_req');
-		$this->session->remove('liste_req_pour_listing');
-	} else {
-		$this->session->remove('liste_req_pour_graphique');
-	}
+    if ($page == 'listing') {
+        $this->session->remove('liste_req');
+        $this->session->remove('liste_req_pour_listing');
+    } else {
+        $this->session->remove('liste_req_pour_graphique');
+    }
 }
 
 }

@@ -15,10 +15,10 @@ use Ipc\ProgBundle\Entity\Site;
 use Symfony\Component\HttpFoundation\Request;
 use \PDO;
 use \PDOException;
+
 use Ipc\ConfigurationBundle\Entity\Requete;
 use Ipc\ConfigurationBundle\Form\Type\RequeteType;
 use Ipc\ConfigurationBundle\Form\Handler\RequeteHandler;
-
 
 
 class ListingController extends Controller {
@@ -50,8 +50,8 @@ private $compteRequetePerso;
 private $limit_excel;
 private $limit_export_sql;
 // variable indiquant le retour de la messages box ' = Continuer ou Annuler'
-private $entities_requetes_perso;
 
+private $entities_requetes_perso;
 
 
 
@@ -122,21 +122,21 @@ private function getRequetesPerso() {
 		if ($this->compteRequetePerso != 'Personnel') {
 			$entities_requetes_perso = $this->em->getRepository('IpcConfigurationBundle:Requete')->myFindByCompte($this->compteRequetePerso, 'listing');
 		} else {
-			//       Le compte personnel n'est accessible qu'a partir des ROLES TECHNICIENS (donc pas pour les CLIENTS)
-			if ($this->get('security.context')->isGranted('ROLE_TECHNICIEN')) {
-				$this->compteRequetePerso = 'Personnel';
-				// Recherche de l'appelation des requêtes de l'utilisateur
-				$entities_requetes_perso = $this->em->getRepository('IpcConfigurationBundle:Requete')->myFindByCreateur($this->session->get('label'), 'listing');
-			} else if ($this->get('security.context')->isGranted('ROLE_CLIENT')) {
-				$this->compteRequetePerso = 'Client';
-				// Recherche de l'appelation des requêtes de l'utilisateur
-				$entities_requetes_perso = $this->em->getRepository('IpcConfigurationBundle:Requete')->myFindByCompte($this->compteRequetePerso, 'listing');
-			}
-		}
-	} else {
-		$this->compteRequetePerso = 'Personnel';
-		// Recherche de l'appelation des requêtes de l'utilisateur
-		$entities_requetes_perso = $this->em->getRepository('IpcConfigurationBundle:Requete')->myFindByCreateur($this->session->get('label'), 'listing');
+        	$this->compteRequetePerso = 'Personnel';
+        	// Recherche de l'appelation des requêtes de l'utilisateur
+        	$entities_requetes_perso = $this->em->getRepository('IpcConfigurationBundle:Requete')->myFindByCreateur($this->session->get('label'), 'listing');
+    	}
+	} else {	 
+		//	 Le compte personnel n'est accessible qu'a partir des ROLES TECHNICIENS (donc pas pour les CLIENTS)
+		if ($this->get('security.context')->isGranted('ROLE_TECHNICIEN')) {
+			$this->compteRequetePerso = 'Personnel';
+			// Recherche de l'appelation des requêtes de l'utilisateur
+			$entities_requetes_perso = $this->em->getRepository('IpcConfigurationBundle:Requete')->myFindByCreateur($this->session->get('label'), 'listing');
+		} else if ($this->get('security.context')->isGranted('ROLE_CLIENT')) {
+			$this->compteRequetePerso = 'Client';
+        	// Recherche de l'appelation des requêtes de l'utilisateur
+        	$entities_requetes_perso = $this->em->getRepository('IpcConfigurationBundle:Requete')->myFindByCompte($this->compteRequetePerso, 'listing');
+		}	
 	}
 	return ($entities_requetes_perso);
 }
@@ -293,7 +293,7 @@ public function indexAction() {
 	$dbh = $this->dbh;
 	$heure_debut = strtotime(date('Y-m-d h:i:s'));
 	$page = 1;
-	$limit = 100;
+	$limit = $this->em->getRepository('IpcProgBundle:Configuration')->findOneByParametre('listing_nb_par_page');
 	$limit_initial = $limit;
 	$request = $this->get('request');
 	$liste_req = $this->session->get('liste_req');
@@ -710,48 +710,47 @@ public function indexAction() {
 		return new Response();
 	} else {
 		// Création du formulaire des requêtes personnelles
-		$ent_requete = new Requete();
+    	$ent_requete = new Requete();
 		$ent_requete->setCreateur($this->session->get('label'));
 		$ent_requete->setType('listing');
-		$form_requete = $this->createForm(new RequeteType(), $ent_requete, array(
-			'action' => $this->generateUrl('ipc_accueilListing'),
-			'method' => 'POST'
-			)
-		);
-		
-		// Récupération de la requête
-		$request = $this->get('request');
-		
-		// Récupération du handler de formulaire
-		$form_handler = new RequeteHandler($form_requete, $request);
+    	$form_requete = $this->createForm(new RequeteType(), $ent_requete, [
+            	'action' => $this->generateUrl('ipc_accueilListing'),
+            	'method' => 'POST'
+         	]
+    	);
+
+    	// Récupération de la requête
+    	$request = $this->get('request');
+
+    	// Récupération du handler de formulaire
+    	$form_handler = new RequeteHandler($form_requete, $request);
 
 		$entity_user = $this->em->getRepository('IpcUserBundle:User')->find($this->container->get('security.context')->getToken()->getUser()->getId());
-		// Execution de la méthode d'execution du handler : Retourne True si les données du formulaire sont validées
-		$process = $form_handler->process($this->em, 'listing', $entity_user, $this->session);
+    	// Execution de la méthode d'execution du handler : Retourne True si les données du formulaire sont validées
+    	$process = $form_handler->process($this->em, 'listing', $entity_user, $this->session);
 
-		// Récupération de l'id de la requête personnelle
+		// Récupération de l'id de la requête personnelle 
 		$id_requete_perso = $this->session->get('listing_requete_selected', null);
 
 		$this->entities_requetes_perso = $this->getRequetesPerso();
 		//return new Response();
-
 		$response = new Response(
 			$this->renderView('IpcListingBundle:Listing:index.html.twig', array(
-				'messagePeriode'		=> $messagePeriode,
+				'messagePeriode' 		=> $messagePeriode,
 				'tab_requetes' 			=> $tab_requetes,
 				'strTab_requetes' 		=> json_encode($tab_requetes),
 				'liste_localisations' 	=> $this->liste_localisations,
 				'liste_genres' 			=> $this->liste_genres,
 				'liste_nomsModules' 	=> $this->liste_noms_modules,
 				'liste_messagesModules' => $this->liste_messages_modules,
-				'maximum_execution_time'=> $maximum_execution_time,
+				'maximum_execution_time' => $maximum_execution_time,
 				//'tab_requetes_perso' => $this->tabRequetesPerso,
 				'entities_requetes_perso' => $this->entities_requetes_perso,
-				'id_requete_perso'		=> $id_requete_perso,
+				'id_requete_perso' 		=> $id_requete_perso,
             	'compte_requete_perso' 	=> $this->compteRequetePerso,
 				'sessionCourante' 		=> $this->session->getSessionName(),
 				'tabSessions' 			=> $this->session->getTabSessions(),
-				'form_requete'			=> $form_requete->createView()
+			 	'form_requete'  		=> $form_requete->createView()
 			))
 		);
 		$response->setPrivate();
@@ -768,7 +767,7 @@ public function afficheListingAction($page) {
 	// Numéro de page par défaut
 	$page = 1;
 	// Nombre de données par page
-	$limit = 100; 
+	$limit = $this->em->getRepository('IpcProgBundle:Configuration')->findOneByParametre('listing_nb_par_page'); 
 	$limit_initial = $limit;
 	$session_date = $this->session->get('session_date');
 	$messagePeriode = $this->messagePeriode;
@@ -910,7 +909,7 @@ public function afficheListingAction($page) {
 			$tmp_donnee = new Donnee();
 			$tabUnionRequete = array();
 			foreach ($liste_req_pour_listing as $key => $requete) {
-				// Récupération de la liste des identifiants de module à rechercher
+                // Récupération de la liste des identifiants de module à rechercher
                 $tabDesRequetes[$key]['liste_id_modules'] = '';
                 foreach ($requete['tab_id_modules'] as $tmp_idmodule) {
                     if ($tmp_idmodule == 'all') {
@@ -1456,3 +1455,4 @@ public function changeListeReqAction() {
 }
 
 }
+
