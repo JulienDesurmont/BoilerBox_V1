@@ -18,7 +18,8 @@
 	if (myRegExp.test(pathUrl)) {
 		window.location.href="/";
 	} else {
-		window.location.href="http://boiler-box.fr";
+        var url_redirection = "http://" + "{{ service_configuration.getSiteParent }}" + '.fr';
+        window.location.href = url_redirection;
 	}
 </script>
 {% endblock javascript %}
