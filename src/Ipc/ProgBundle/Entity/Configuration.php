@@ -64,6 +64,8 @@ class Configuration
     public function __construct()
     {
 		$this->dateMES = new \Datetime();
+		$this->parametreAdmin = true;
+        $this->parametreTechnicien = false;
     }
 
 
