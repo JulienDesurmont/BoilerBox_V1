@@ -44,6 +44,8 @@ SCRIPTS=/srv/www/htdocs/BoilerBox/web/sh
 * * * * *       $SCRIPTS/GestionSystem/modbusGet.sh 1>>/dev/null 2>&1
 # Relance du serveur apache tous les soirs à minuit
 0 0 * * *       $SCRIPTS/GestionSystem/relanceApache.sh 1>>/dev/null 2>&1
-# Comptage du nombre de données dans la table t_donnees tous les matins à 1h
-0 8 * * *       $BOILERBOX/app/console verificationDB:donnee
+# Comptage du nombre de données dans la table t_donnees tous les jours à 8h 10h et 13h
+0 8,10,13 * * * $BOILERBOX/app/console verificationDB:donnee
+# Relance des fichiers du dossier erreur en les renommant pour palier les erreurs de fichiers corrompus
+0 1 * * *       $SCRIPTS/GestionErreur/prod_reloadErrorFicRenameTime.sh 1>>/dev/null 2>&1
 
