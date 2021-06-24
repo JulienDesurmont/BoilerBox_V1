@@ -149,6 +149,7 @@ public function getMostMessages($dateDeb, $dateFin, $idLocalisation, $type, $idT
 	
 	
 	// Si le type de module à rechercher est un défaut : Exclusion des id de modules de Came numérique
+	/*
 	if ($type == "genre") {
 		$nouvelle_listeMessages = "";
 		$tabtmpListe = explode(',', $listeMessages);
@@ -162,6 +163,8 @@ public function getMostMessages($dateDeb, $dateFin, $idLocalisation, $type, $idT
 		$nouvelle_listeMessages = substr($nouvelle_listeMessages, 0, -1);
 		$listeMessages = $nouvelle_listeMessages;
 	}
+	*/
+
 	$tabMostMessages = array();
 	$nbOccurences = 0;
 	if ($type == 'codeModuleAR') {
@@ -1928,11 +1931,16 @@ private function transformeDate($dateToBeTransformed) {
     $dateTransformed = null;
     $pattern = '/^(\d{2})-(\d{2})-(\d{4}) (\d{2}:\d{2}:\d{2})$/';
     if (preg_match($pattern, $dateToBeTransformed, $tabDate)) {
-        $dateTransformed = $tabDate[1].'/'.$tabDate[2].'/'.$tabDate[3].' '.$tabDate[4];
+        $dateTransformed = $tabDate[3].'/'.$tabDate[2].'/'.$tabDate[1].' '.$tabDate[4];
+        return($dateTransformed);
     }
-    return($dateTransformed);
+    $pattern = '/^(\d{4})-(\d{2})-(\d{2}) (\d{2}:\d{2}:\d{2})$/';
+    if (preg_match($pattern, $dateToBeTransformed, $tabDate)) {
+        $dateTransformed = $tabDate[1].'/'.$tabDate[2].'/'.$tabDate[3].' '.$tabDate[4];
+        return($dateTransformed);
+    }
+    return($dateToBeTransformed);
 }
-
 
 
 private function rechercheValeurLivre($dateDeb, $dateFin, $idLA, $idModule){
